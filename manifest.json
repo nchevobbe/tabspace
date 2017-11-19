@@ -1,0 +1,35 @@
+{
+
+  "manifest_version": 2,
+  "name": "TabSpace",
+  "version": "0.1",
+
+  "description": "TabGroup/Panorama like.",
+
+  "icons": {
+    "48": "icons/tabspace.png"
+  },
+
+  "permissions": [
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/tabspace.png",
+    "default_title": "TabSpace"
+  },
+
+  "background": {
+    "scripts": [
+      "src/background-script.js"
+    ]
+  },
+
+  "permissions": [
+    "tabs",
+    "history"
+  ],
+
+  "web_accessible_resources": []
+
+}
