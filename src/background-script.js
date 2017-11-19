@@ -7,8 +7,14 @@ async function onIconClick() {
     const tab = await getTabSpaceTab();
     if (tab) {
       // Close the tab.
+      browser.browserAction.setIcon({
+        path: "icons/tabspace.svg"
+      });
       await browser.tabs.remove(tab.id);
     } else {
+      browser.browserAction.setIcon({
+        path: "icons/tabspace-active.svg"
+      });
       // Create the tab.
       await browser.tabs.create({
         url

@@ -69,6 +69,9 @@ browser.tabs.onMoved.addListener((tabId, moveInfo) => {
 browser.tabs.onActivated.addListener(async () => {
   const tabspaceTab = await getTabSpaceTab();
   if (tabspaceTab) {
+    browser.browserAction.setIcon({
+      path: "/icons/tabspace.svg"
+    });
     browser.tabs.remove(tabspaceTab.id);
   }
 });
