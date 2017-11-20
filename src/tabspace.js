@@ -1,50 +1,94 @@
-const tabsList = document.getElementById('tabs-list');
+const main = document.querySelector("main");
+const spacesByWindow = new Map([[1, new Map()]]);
+
+function getSpacesForWindow(windowId) {
+  // TODO: Handle different windows.
+  return spacesByWindow.get(1);
+}
 
 /**
  * list tabs
  */
 async function listTabs() {
-  const tabs = await getCurrentWindowTabs();
-  let currentTabs = document.createDocumentFragment();
-  tabsList.innerHTML = '';
+  const spacesEl = document.createDocumentFragment();
+  main.innerHTML = "";
 
-  for (let tab of tabs) {
-    let tabEl = document.createElement('li');
-    tabEl.textContent = tab.title || tab.id;
-    tabEl.setAttribute('data-id', tab.id);
-    tabEl.classList.add('switch-tabs');
-    const btn = document.createElement('button');
-    btn.textContent = "✕";
-    btn.classList.add("close-tab");
-    tabEl.appendChild(btn);
-    currentTabs.appendChild(tabEl);
+  const tabs = await getCurrentWindowTabs();
+  const spaces = getSpacesForWindow();
+
+  if (spaces.size === 0) {
+    spaces.set(1, {
+      id: 1,
+      title: "default",
+      tabs,
+    })
   }
-  tabsList.appendChild(currentTabs);
+
+  spaces.forEach(space => {
+    const spaceEl = e("section", {},
+      e("header", {},
+        e("h2", {}, space.title),
+        spaces.size > 1
+          ? e("button", {
+              class: "space-close close"
+            }, "✕")
+          : null
+      )
+    );
+
+    space.tabs.forEach(tab => {
+      spaceEl.appendChild(e("a", {
+          class: "tab",
+          "data-id": tab.id,
+          title: tab.title,
+          href: tab.url,
+        },
+        e("div", { class: "tab-screen" }),
+        e("img", { class: "tab-favicon", src: tab.favIconUrl }),
+        e("button", { class: "tab-close close" }, "✕"),
+        e("span", { class: "tab-origin" }, (new URL(tab.url)).host.replace("www.", ""))
+      ));
+    });
+
+    spaceEl.appendChild(
+      e("button", {
+        class: "tab-create",
+      }, "+")
+    );
+
+    spacesEl.appendChild(spaceEl);
+  });
+
+  spacesEl.appendChild(e("button", {
+    class: "space-create",
+  }, "Create new space"));
+
+  main.appendChild(spacesEl);
 }
 
 document.addEventListener("DOMContentLoaded", listTabs);
 
 document.addEventListener("click", async (e) => {
-  if (e.target.id === "tabs-create") {
+  e.preventDefault();
+
+  if (e.target.classList.contains("tab-create")) {
     browser.tabs.create({});
     return;
   }
 
-  if (e.target.classList.contains('switch-tabs')) {
-    var tabId = e.target.getAttribute('data-id');
+  if (e.target.classList.contains("tab-close")) {
+    const tabId = e.target.closest("[data-id]").getAttribute("data-id");
+    browser.tabs.remove(parseInt(tabId));
+    return;
+  }
+
+  if (e.target.closest("[data-id]")) {
+    var tabId = e.target.closest("[data-id]").getAttribute("data-id");
     browser.tabs.update(parseInt(tabId), {
       active: true
     });
     return;
   }
-
-
-  if (e.target.classList.contains('close-tab')) {
-    var tabId = e.target.closest("[data-id]").getAttribute('data-id');
-    browser.tabs.remove(parseInt(tabId));
-  }
-
-  e.preventDefault();
 });
 
 //onRemoved listener. fired when tab is removed
@@ -57,13 +101,6 @@ browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
   if (tabEl) {
     tabEl.remove();
   }
-});
-
-//onMoved listener. fired when tab is moved into the same window
-browser.tabs.onMoved.addListener((tabId, moveInfo) => {
-  var startIndex = moveInfo.fromIndex;
-  var endIndex = moveInfo.toIndex;
-  console.log(`Tab with id: ${tabId} moved from index: ${startIndex} to index: ${endIndex}`);
 });
 
 browser.tabs.onActivated.addListener(async () => {

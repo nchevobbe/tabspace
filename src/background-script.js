@@ -1,6 +1,5 @@
 browser.browserAction.onClicked.addListener(onIconClick);
 const url = browser.extension.getURL("./src/tabspace.html");
-let extensionTab = null;
 
 async function onIconClick() {
   try {
