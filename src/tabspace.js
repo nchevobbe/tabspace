@@ -59,10 +59,6 @@ async function listTabs() {
     spacesEl.appendChild(spaceEl);
   });
 
-  spacesEl.appendChild(e("button", {
-    class: "space-create",
-  }, "Create new space"));
-
   main.appendChild(spacesEl);
 }
 
