@@ -1,7 +1,8 @@
-browser.browserAction.onClicked.addListener(onIconClick);
+browser.browserAction.onClicked.addListener(tabSpaceToggle);
+
 const url = browser.extension.getURL("./src/tabspace.html");
 
-async function onIconClick() {
+async function tabSpaceToggle() {
   try {
     const tab = await getTabSpaceTab();
     if (tab) {
