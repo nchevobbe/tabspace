@@ -55,7 +55,13 @@ function e(tagName, attributes = {}, ...items) {
   let element = document.createElement(tagName);
 
   for (let [attributeKey, attributeValue] of  Object.entries(attributes)) {
-    element.setAttribute(attributeKey, attributeValue);
+    if (attributeKey === "style") {
+      for (let [propName, propValue] of Object.entries(attributeValue)) {
+        element.style[propName] = propValue;
+      }
+    } else {
+      element.setAttribute(attributeKey, attributeValue);
+    }
   }
 
   if (items.length > 0) {
