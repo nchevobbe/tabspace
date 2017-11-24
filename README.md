@@ -2,7 +2,7 @@
 
 This is an attempt to re-create a TabGroup/Panorama-like web extension.
 
-![Early screenshot](assets/screenshot.jpg?raw=true "Early screenshot")
+![Early screenshot](https://github.com/nchevobbe/tabspace/raw/master/assets/screenshot.png "Early screenshot")
 
 ## Run the extension
 
