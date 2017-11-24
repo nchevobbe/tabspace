@@ -37,18 +37,20 @@ async function render() {
     });
   }
 
-  fragment.appendChild(renderSpaces(spaces));
   fragment.appendChild(renderPinnedTabs(tabs));
+  fragment.appendChild(renderSpaces(spaces));
   fragment.appendChild(renderSpaceTabs(spaces.get("1")));
 
   main.appendChild(fragment);
 }
 
 function renderSpaces(spaces) {
-  const spacesEl = e("ul", {class: "spaces"});
+  const spacesEl = e("nav", {class: "spaces"});
+  const listEl = e("ul");
   spaces.forEach(space => {
-    spacesEl.appendChild(renderSpace(space));
+    listEl.appendChild(renderSpace(space));
   });
+  spacesEl.appendChild(listEl);
   spacesEl.appendChild(e("button", {class: "space-add clean"}));
   return spacesEl;
 }
@@ -56,18 +58,28 @@ function renderSpaces(spaces) {
 function renderSpace(space) {
   return e("li", {
       class: space.active ? "active" : null,
-      "content-editable": true,
     },
-    space.title,
+    e("span", {}, space.title),
     e("button", {class: "space-close clean"})
   );
 }
 
 function renderPinnedTabs(tabs) {
-  const bar = e("aside", {class: "pinned"});
+  const bar = e("aside", {
+    class: "pinned"
+  });
   for (const tab of tabs) {
     if (tab.pinned) {
-      bar.appendChild(e("img", {src: tab.favIconUrl}));
+      bar.appendChild(
+        e("a", {
+            "data-id": tab.id,
+            title: tab.title,
+            href: tab.url,
+            class: "pinned-tab",
+          },
+          e("img", {src: tab.favIconUrl})
+        )
+      );
     }
   }
   return bar;
