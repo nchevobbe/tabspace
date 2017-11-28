@@ -1,5 +1,4 @@
 {
-
   "manifest_version": 2,
   "name": "TabSpace",
   "version": "0.1",
@@ -9,10 +8,6 @@
   "icons": {
     "48": "icons/tabspace.svg"
   },
-
-  "permissions": [
-    "activeTab"
-  ],
 
   "browser_action": {
     "default_icon": "icons/tabspace.svg",
@@ -28,16 +23,10 @@
   },
 
   "background": {
-    "scripts": [
-      "src/background-script.js"
-    ]
+    "scripts": ["dist/background.js"]
   },
 
-  "permissions": [
-    "tabs",
-    "history"
-  ],
+  "permissions": ["activeTab", "history", "tabs"],
 
   "web_accessible_resources": []
-
 }

@@ -1,0 +1,10 @@
+{
+	"plugins": [ "transform-react-jsx", "transform-object-rest-spread" ],
+	"presets": [ "flow" ],
+	"env": {
+		"jest/globals": true,
+		"test": {
+			"plugins": [ "transform-es2015-modules-commonjs", "transform-async-to-generator" ]
+		}
+	}
+}

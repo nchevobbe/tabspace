@@ -1,23 +1,70 @@
 {
   "name": "tabspace",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start:firefox": "web-ext run --browser-console",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nchevobbe/tabspace.git"
-  },
-  "author": "",
+  "version": "0.0.1",
+  "description": "TabGgroup-like extension",
+  "main": "src/background-script.js",
+  "author": "Nicolas Chevobbe",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nchevobbe/tabspace/issues"
   },
   "homepage": "https://github.com/nchevobbe/tabspace#readme",
+  "scripts": {
+    "start:firefox": "webpack --watch --colors & web-ext run",
+    "test": "jest",
+    "lint-js": "eslint src",
+    "build": "webpack --colors",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": ["prettier --write", "git add"]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nchevobbe/tabspace.git"
+  },
   "devDependencies": {
-    "web-ext": "^2.2.2"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "eslint": "^4.11.0",
+    "eslint-config-prettier": "^2.8.0",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "eslint-plugin-jest": "^21.3.2",
+    "eslint-plugin-jsx": "0.0.2",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-react": "^7.5.1",
+    "flow-bin": "^0.59.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2",
+    "web-ext": "^2.2.2",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
+  },
+  "prettier": {
+    "printWidth": 90,
+    "semi": true,
+    "singleQuote": false,
+    "trailingComma": "es5"
+  },
+  "jest": {
+    "rootDir": "src",
+    "testPathIgnorePatterns": ["/node_modules/"],
+    "setupFiles": ["<rootDir>/setupTests.js"]
   }
 }
